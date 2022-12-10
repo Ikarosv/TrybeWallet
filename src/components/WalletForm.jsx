@@ -14,8 +14,8 @@ class WalletForm extends Component {
       value: '',
       description: '',
       currency: 'USD',
-      method: '',
-      tag: '',
+      method: METHODS[0],
+      tag: CATEGORIES[0],
     };
   }
 
@@ -41,8 +41,8 @@ class WalletForm extends Component {
     this.setState({
       value: '',
       description: '',
-      method: '',
-      tag: '',
+      method: METHODS[0],
+      tag: CATEGORIES[0],
     });
   };
 
@@ -59,6 +59,7 @@ class WalletForm extends Component {
         <input
           name="value"
           type="number"
+          step="0.010"
           value={ value }
           onChange={ this.handleChange }
           data-testid="value-input"
