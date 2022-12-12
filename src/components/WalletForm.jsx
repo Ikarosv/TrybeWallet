@@ -27,10 +27,10 @@ class WalletForm extends Component {
 
   handleSubmit = (event) => {
     const { value, description, currency, method, tag } = this.state;
-    const { dispatch, idToEdit } = this.props;
+    const { dispatch, ids } = this.props;
     event.preventDefault();
     const expensesInfos = {
-      id: idToEdit,
+      id: ids,
       value,
       description,
       currency,
@@ -105,13 +105,13 @@ WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
   // expenses: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  idToEdit: PropTypes.number.isRequired,
+  ids: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (globalState) => ({
   currencies: globalState.wallet.currencies,
   expenses: globalState.wallet.expenses,
-  idToEdit: globalState.wallet.idToEdit,
+  ids: globalState.wallet.ids,
 });
 
 export default connect(mapStateToProps)(WalletForm);

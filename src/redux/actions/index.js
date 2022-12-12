@@ -2,6 +2,7 @@
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SEARCH_CURRENCIES = 'SEARCH_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 // SALVAR INFORMAÇÕES DO USUARIO
 
@@ -38,3 +39,10 @@ export const saveExpensesForm = (expenseInfos) => async (dispatch) => {
     .then((data) => dispatch(saveExpenses({ ...expenseInfos, exchangeRates: data })))
     .catch((error) => console.log(error));
 };
+
+//  DELETAR DESPESA
+
+export const deleteExpense = (id, expenses) => ({
+  type: DELETE_EXPENSE,
+  payload: expenses.filter((expense) => expense.id !== id),
+});
