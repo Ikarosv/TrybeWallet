@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { saveExpensesForm } from '../redux/actions';
+import { saveEditedExpenses, saveExpensesForm } from '../redux/actions';
 
 const METHODS = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 const CATEGORIES = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -26,18 +26,22 @@ class WalletForm extends Component {
   ));
 
   handleSubmit = (event) => {
-    const { value, description, currency, method, tag } = this.state;
-    const { dispatch, ids } = this.props;
     event.preventDefault();
+    const { value, description, currency, method, tag } = this.state;
+    const { dispatch, ids, editor, idToEdit, expenses } = this.props;
     const expensesInfos = {
-      id: ids,
+      id: editor ? idToEdit : ids,
       value,
       description,
       currency,
       method,
       tag,
     };
-    dispatch(saveExpensesForm(expensesInfos));
+    if (editor) {
+      dispatch(saveEditedExpenses(expensesInfos, expenses));
+    } else {
+      dispatch(saveExpensesForm(expensesInfos));
+    }
     this.setState({
       value: '',
       description: '',
@@ -53,7 +57,7 @@ class WalletForm extends Component {
 
   render() {
     const { value, description, currency, method, tag } = this.state;
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     return (
       <form onSubmit={ this.handleSubmit }>
         <input
@@ -95,7 +99,9 @@ class WalletForm extends Component {
         >
           {this.toOptions(CATEGORIES)}
         </select>
-        <button type="submit">Adicionar despesa</button>
+        <button type="submit">
+          { editor ? 'Editar despesa' : 'Adicionar despesa' }
+        </button>
       </form>
     );
   }
@@ -103,13 +109,17 @@ class WalletForm extends Component {
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  idToEdit: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
-  // expenses: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
+  editor: PropTypes.bool.isRequired,
   ids: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (globalState) => ({
   currencies: globalState.wallet.currencies,
+  editor: globalState.wallet.editor,
+  idToEdit: globalState.wallet.idToEdit,
   expenses: globalState.wallet.expenses,
   ids: globalState.wallet.ids,
 });

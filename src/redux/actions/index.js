@@ -3,6 +3,8 @@ export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SEARCH_CURRENCIES = 'SEARCH_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const SAVE_EDITED = 'SAVE_EDITED';
 
 // SALVAR INFORMAÇÕES DO USUARIO
 
@@ -45,4 +47,16 @@ export const saveExpensesForm = (expenseInfos) => async (dispatch) => {
 export const deleteExpense = (id, expenses) => ({
   type: DELETE_EXPENSE,
   payload: expenses.filter((expense) => expense.id !== id),
+});
+
+export const editExpense = (id) => ({
+  type: EDIT_EXPENSE,
+  payload: id,
+});
+
+export const saveEditedExpenses = (edited, expenses) => ({
+  type: SAVE_EDITED,
+  payload: expenses.map((expense) => (
+    expense.id === edited.id ? { ...expense, ...edited } : expense
+  )),
 });
