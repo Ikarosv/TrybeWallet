@@ -18,20 +18,6 @@ const fillExpenseForm = ({ description, value, method, tag }, editor = false) =>
   userEvent.selectOptions(tagInput, tag);
   userEvent.click(buttonSubmit);
 };
-
-const addExpense = (data) => {
-  if (Array.isArray(data)) {
-    return data.forEach(addExpense);
-  }
-
-  fillExpenseForm(data);
-};
-
-// const mockFetch = () => Promise.resolve({
-//   json: () => Promise.resolve(froakie),
-// });
-
-// const loginCredentials = () => {
 //   const DEFAULT_EMAIL = 'test@example.com';
 //   const DEFAULT_PASSWORD = '123456';
 
@@ -50,6 +36,13 @@ const checkHeadings = (headings) => {
     expect(screen.getByRole('columnheader', { name })).toBeInTheDocument();
   });
 };
+
+const myFor = async (element) => {
+  expect(await screen.findByRole('cell', {
+    name: element,
+  })).toBeInTheDocument();
+};
+
 const mockFetch = () => Promise.resolve({
   json: () => Promise.resolve(mockData),
 });
@@ -79,11 +72,7 @@ describe('Teste da table', () => {
       value: '10.00',
       currency: 'Dólar Americano/Real Brasileiro',
     };
-    Object.values(verification).forEach(async (element) => {
-      expect(await screen.findByRole('cell', {
-        name: element,
-      })).toBeInTheDocument();
-    });
+    Object.values(verification).forEach(myFor);
   });
 
   test('Testa se é posivel deletar uma despesa', async () => {
@@ -116,10 +105,6 @@ describe('Teste da table', () => {
       value: '5.00',
       currency: 'Dólar Americano/Real Brasileiro',
     };
-    Object.values(verification).forEach(async (element) => {
-      expect(await screen.findByRole('cell', {
-        name: element,
-      })).toBeInTheDocument();
-    });
+    Object.values(verification).forEach(myFor);
   });
 });
