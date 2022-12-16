@@ -105,6 +105,7 @@ describe('Teste da table', () => {
       value: '5.00',
       currency: 'Dólar Americano/Real Brasileiro',
     };
+
     Object.values(verification).forEach(myFor);
   });
 });
